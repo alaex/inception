@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: requirements/nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: nginx
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    volumes:
+      - wp-data:/var/www/wordpress
+    depends_on:
+      - wordpress
+    restart: on-failure
+
+  mariadb:
+    build:
+      context: requirements/mariadb
+      dockerfile: Dockerfile
+    image: mariadb
+    volumes:
+      - db-data:/var/lib/mysql
+    container_name: mariadb
+    env_file:
+      - .env
+    restart: on-failure
+
+  wordpress:
+    build:
+      context: requirements/wordpress
+      dockerfile: Dockerfile
+    image: wordpress
+    container_name: wordpress
+    env_file:
+      - .env
+    volumes:
+      - wp-data:/var/www/wordpress
+    depends_on:
+      - mariadb
+    restart: on-failure
+
+volumes:
+  wp-data:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/kali/data/wp
+
+  db-data:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/kali/data/db

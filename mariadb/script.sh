@@ -1,11 +1,6 @@
 #! /bin/sh
 
-ROOT_PASSWORD_DB="root1234"
-DATABASE_NAME="db_maria"
-MYSQL_USER="user"
-MYSQL_PASSWORD="user1234"
-
-# echo "bind-address = mariadb" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+echo "bind-address = mariadb" >> /etc/mysql/mariadb.conf.d/50-server.cnf
 
 mysqld_safe &
 

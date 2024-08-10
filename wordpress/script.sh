@@ -1,12 +1,12 @@
 #! /bin/bash
 
 sleep 20
-sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/' /etc/php/7.4/fpm/pool.d/www.conf
+sed -i 's/listen = \/run\/php\/php8.2-fpm.sock/listen = 9000/' /etc/php/8.2/fpm/pool.d/www.conf
 
 wp core download --allow-root --path='/var/www/wordpress'
 
 wp config create --allow-root \
-	--dbname=$DATABASE_NAME_DB \
+	--dbname=$DATABASE_NAME \
 	--dbuser=$MYSQL_USER \
 	--dbpass=$MYSQL_PASSWORD \
 	--dbhost=$DB_HOSTNAME \
@@ -26,4 +26,4 @@ wp user create --allow-root $WORDPRESS_USER $WORDPRESS_USER_EMAIL \
     --user_pass=$WORDPRESS_USER_PASSWORD \
     --role=author --path=$WP_PATH || echo "error 3"
 
-/usr/sbin/php-fpm7.4 -F || echo "error 4"
+/usr/sbin/php-fpm8.2 -F || echo "error 4"
