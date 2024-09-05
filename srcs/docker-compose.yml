@@ -3,9 +3,9 @@ version: '3.8'
 services:
   nginx:
     build:
-      context: requirements/nginx
+      context: nginx
       dockerfile: Dockerfile
-    image: nginx
+    image: nginx:1337
     container_name: nginx
     env_file:
       - .env
@@ -16,24 +16,28 @@ services:
     depends_on:
       - wordpress
     restart: on-failure
+    networks:
+      - internal_network
 
   mariadb:
     build:
-      context: requirements/mariadb
+      context: mariadb
       dockerfile: Dockerfile
-    image: mariadb
+    image: mariadb:1337
     volumes:
       - db-data:/var/lib/mysql
     container_name: mariadb
     env_file:
       - .env
     restart: on-failure
+    networks:
+      - internal_network
 
   wordpress:
     build:
-      context: requirements/wordpress
+      context: wordpress
       dockerfile: Dockerfile
-    image: wordpress
+    image: wordpress:1337
     container_name: wordpress
     env_file:
       - .env
@@ -42,16 +46,21 @@ services:
     depends_on:
       - mariadb
     restart: on-failure
+    networks:
+      - internal_network
 
 volumes:
   wp-data:
     driver_opts:
       o: bind
       type: none
-      device: /home/kali/data/wp
+      device: /home/aen-naas/data/wp
 
   db-data:
     driver_opts:
       o: bind
       type: none
-      device: /home/kali/data/db
+      device: /home/aen-naas/data/db
+networks:
+  internal_network:
+    driver: bridge

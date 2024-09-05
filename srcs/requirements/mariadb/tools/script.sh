@@ -1,10 +1,10 @@
-#! /bin/sh
+#!/bin/bash
 
 echo "bind-address = mariadb" >> /etc/mysql/mariadb.conf.d/50-server.cnf
 
 mysqld_safe &
 
-sleep 6
+sleep 10
 
 mariadb -u root -p"$ROOT_PASSWORD_DB" <<SQL
 CREATE DATABASE IF NOT EXISTS $DATABASE_NAME;
